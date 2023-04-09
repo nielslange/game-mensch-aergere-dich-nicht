@@ -5,9 +5,10 @@ import {
 	getWinner,
 	hasWinner,
 	isHomePeg,
+	isFieldOutOfBoard,
+	isFieldOccupiedByCurrentPlayer,
 	isStartOccupiedByCurrentPlayer,
 	isStartOccupiedByOtherPlayer,
-	isFieldOccupiedByCurrentPlayer,
 	isOwnPeg,
 	getPegMetaOfOccupiedHomeField,
 } from '../utils/';
@@ -38,10 +39,10 @@ const Peg = ( props: PegProps ) => {
 		const peg = event.target.dataset.peg;
 		const newPegs = JSON.parse( JSON.stringify( pegs ) );
 
-		/**
-		 * If there is a winner, return a success message announcing the winner.
-		 */
 		if ( hasWinner( pegs ) ) {
+			/**
+			 * If there is a winner, return a success message announcing the winner.
+			 */
 			const winner = getWinner( pegs );
 			return dispatch(
 				setNotice( {
@@ -59,6 +60,15 @@ const Peg = ( props: PegProps ) => {
 				setNotice( {
 					type: 'error',
 					message: 'This is not your peg!',
+				} )
+			);
+		}
+
+		if ( isFieldOutOfBoard( { currentPlayer, pegs, peg, die } ) ) {
+			return dispatch(
+				setNotice( {
+					type: 'error',
+					message: 'The target field is outside the board!',
 				} )
 			);
 		}
@@ -115,7 +125,10 @@ const Peg = ( props: PegProps ) => {
 			 */
 			if ( isStartOccupiedByOtherPlayer( { currentPlayer, pegs } ) ) {
 				// Find out which peg is on the start field and move it back to the home field.
-				const meta = getPegMetaOfOccupiedHomeField( { currentPlayer, pegs } );
+				const meta = getPegMetaOfOccupiedHomeField( {
+					currentPlayer,
+					pegs,
+				} );
 				switch ( meta?.color ) {
 					case 'yellow':
 						newPegs[ meta?.id - 1 ].field.yellow = 0;
@@ -163,25 +176,25 @@ const Peg = ( props: PegProps ) => {
 			case 'yellow':
 				newPegs[ peg ].field.yellow += die;
 				if ( newPegs[ peg ].field.yellow > 40 ) {
-					newPegs[ peg ].field.yellow.state = 'home';
+					newPegs[ peg ].field.state = 'home';
 				}
 				break;
 			case 'green':
 				newPegs[ peg ].field.green += die;
 				if ( newPegs[ peg ].field.green > 40 ) {
-					newPegs[ peg ].field.green.state = 'home';
+					newPegs[ peg ].field.state = 'home';
 				}
 				break;
 			case 'red':
 				newPegs[ peg ].field.red += die;
 				if ( newPegs[ peg ].field.red > 40 ) {
-					newPegs[ peg ].field.red.state = 'home';
+					newPegs[ peg ].field.state = 'home';
 				}
 				break;
 			case 'blue':
 				newPegs[ peg ].field.blue += die;
 				if ( newPegs[ peg ].field.blue > 40 ) {
-					newPegs[ peg ].field.blue.state = 'home';
+					newPegs[ peg ].field.state = 'home';
 				}
 				break;
 		}

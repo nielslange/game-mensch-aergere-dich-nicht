@@ -1,4 +1,9 @@
-const getPegMetaOfOccupiedHomeField = ( { currentPlayer, pegs }: { currentPlayer: string; pegs: any } ) => {
+interface getPegMetaOfOccupiedHomeFieldProps {
+	currentPlayer: string;
+	pegs: any;
+}
+
+const getPegMetaOfOccupiedHomeField = ( { currentPlayer, pegs }: getPegMetaOfOccupiedHomeFieldProps ) => {
 	let occupyingPeg;
 
 	switch ( currentPlayer ) {

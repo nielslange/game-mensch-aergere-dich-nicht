@@ -1,4 +1,9 @@
-const isOwnPeg = ( { player, currentPlayer }: { player: string; currentPlayer: string } ) => {
+interface isOwnPegProps {
+	player: string;
+	currentPlayer: string;
+}
+
+const isOwnPeg = ( { player, currentPlayer }: isOwnPegProps ) => {
 	return player === currentPlayer;
 };
 

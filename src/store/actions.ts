@@ -1,6 +1,10 @@
-import { Player } from './state';
 import TYPES from './action-types';
-const { ROLL_DIE, CLEAR_NOTICE, SET_NOTICE, NEXT_PLAYER, MOVE_PEG } = TYPES;
+import { Player } from './state';
+const { CLEAR_NOTICE, MOVE_PEG, NEXT_PLAYER, RESET_STATE, ROLL_DIE, SET_NOTICE } = TYPES;
+
+export const resetGame = () => {
+	return { type: RESET_STATE };
+};
 
 export const rollDie = () => {
 	// const die = Math.floor( Math.random() * 6 ) + 1;
@@ -18,23 +22,11 @@ export const setNotice = ( notice: any ) => {
 };
 
 export const nextPlayer = ( { currentPlayer }: { currentPlayer: Player } ) => {
-	let player = '';
-	switch ( currentPlayer ) {
-		case 'yellow':
-			player = 'green';
-			break;
-		case 'green':
-			player = 'red';
-			break;
-		case 'red':
-			player = 'blue';
-			break;
-		case 'blue':
-			player = 'yellow';
-			break;
-	}
-
-	return { type: NEXT_PLAYER, player };
+	const players = [ 'yellow', 'green', 'red', 'blue' ];
+	const currentIndex = players.indexOf( currentPlayer );
+	const nextIndex = ( currentIndex + 1 ) % players.length;
+	const nextPlayer = players[ nextIndex ];
+	return { type: NEXT_PLAYER, player: nextPlayer };
 };
 
 export const movePeg = ( { pegs }: { pegs: any } ) => {

@@ -1,9 +1,12 @@
 import { initialState } from './state';
 import TYPES from './action-types';
-const { ROLL_DIE, CLEAR_NOTICE, SET_NOTICE, NEXT_PLAYER, MOVE_PEG } = TYPES;
+const { ROLL_DIE, CLEAR_NOTICE, MOVE_PEG, NEXT_PLAYER, RESET_STATE, SET_NOTICE } = TYPES;
 
 const reducer = ( state = initialState, action: any ) => {
 	switch ( action.type ) {
+		case RESET_STATE:
+			return initialState;
+
 		case ROLL_DIE:
 			return { ...state, die: action.die };
 
