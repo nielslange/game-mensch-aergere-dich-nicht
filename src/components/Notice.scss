@@ -1,0 +1,28 @@
+// Nord Theme Colors
+$black: #2e3440;
+$blue: #5e81ac;
+$red: #bf616a;
+$yellow: #ebcb8b;
+$green: #a3be8c;
+
+.notice {
+	padding: 10px;
+	color: $black;
+
+	&.error {
+		border: 1px solid;
+		background: $red;
+		color: white;
+	}
+
+	&.info {
+		border: 1px solid;
+		background: $blue;
+		color: white;
+	}
+
+	&.success {
+		border: 1px solid;
+		background: $green;
+	}
+}

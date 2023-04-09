@@ -1,0 +1,45 @@
+// Nord Theme Colors
+$black: #2e3440;
+$blue: #5e81ac;
+$red: #bf616a;
+$yellow: #ebcb8b;
+$green: #a3be8c;
+
+$width: 3px;
+
+.board {
+	display: grid;
+	grid-template-columns: repeat(11, 1fr);
+	grid-template-rows: repeat(11, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	// margin: 20px auto;
+	width: calc($width * 132);
+	.board-cell {
+		margin: $width;
+		height: calc($width * 10);
+		width: calc($width * 10);
+		// border: 1px solid black;
+		display: inline-block;
+		box-sizing: border-box;
+
+		&.circle {
+			border-radius: 50%;
+			box-sizing: border-box;
+			border: 2px solid #2e3440;
+		}
+
+		&.yellow {
+			background-color: lighten($yellow, 15%);
+		}
+		&.red {
+			background-color: lighten($red, 15%);
+		}
+		&.blue {
+			background-color: lighten($blue, 15%);
+		}
+		&.green {
+			background-color: lighten($green, 15%);
+		}
+	}
+}
