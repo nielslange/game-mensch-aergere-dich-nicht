@@ -1,7 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
 import classnames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import { movePeg, setNotice, nextPlayer, rollDie } from '../store/actions';
-import { getWinner, hasWinner, isHomePeg, isStartOccupiedByCurrentPlayer, isStartOccupiedByOtherPlayer, isOwnPeg, getPegMetaOfOccupiedHomeField } from '../utils/';
+import {
+	getWinner,
+	hasWinner,
+	isHomePeg,
+	isStartOccupiedByCurrentPlayer,
+	isStartOccupiedByOtherPlayer,
+	isFieldOccupiedByCurrentPlayer,
+	isOwnPeg,
+	getPegMetaOfOccupiedHomeField,
+} from '../utils/';
 import './Peg.scss';
 
 interface PegProps {
@@ -29,6 +38,9 @@ const Peg = ( props: PegProps ) => {
 		const peg = event.target.dataset.peg;
 		const newPegs = JSON.parse( JSON.stringify( pegs ) );
 
+		/**
+		 * If there is a winner, return a success message announcing the winner.
+		 */
 		if ( hasWinner( pegs ) ) {
 			const winner = getWinner( pegs );
 			return dispatch(
@@ -39,6 +51,9 @@ const Peg = ( props: PegProps ) => {
 			);
 		}
 
+		/**
+		 * If the die is 0, return an error.
+		 */
 		if ( ! isOwnPeg( { player, currentPlayer } ) ) {
 			return dispatch(
 				setNotice( {
@@ -48,6 +63,9 @@ const Peg = ( props: PegProps ) => {
 			);
 		}
 
+		/**
+		 * If the die is not 6 and the peg is on the home field, return an error.
+		 */
 		if ( die !== 6 && isHomePeg( pegs[ peg ] ) ) {
 			return dispatch(
 				setNotice( {
@@ -57,6 +75,9 @@ const Peg = ( props: PegProps ) => {
 			);
 		}
 
+		/**
+		 * If the die is 6 and the peg is on the home field, return an error.
+		 */
 		if ( die === 6 && isHomePeg( pegs[ peg ] ) && isStartOccupiedByCurrentPlayer( { currentPlayer, pegs } ) ) {
 			return dispatch(
 				setNotice( {
@@ -66,6 +87,9 @@ const Peg = ( props: PegProps ) => {
 			);
 		}
 
+		/**
+		 * If the die is 6 and the peg is on the home field, move it to the start field.
+		 */
 		if ( die === 6 && isHomePeg( pegs[ peg ] ) && ! isStartOccupiedByCurrentPlayer( { currentPlayer, pegs } ) ) {
 			switch ( player ) {
 				case 'yellow':
@@ -86,6 +110,9 @@ const Peg = ( props: PegProps ) => {
 					break;
 			}
 
+			/**
+			 * If the start field is occupied by another player, move the other player's peg back to their home field.
+			 */
 			if ( isStartOccupiedByOtherPlayer( { currentPlayer, pegs } ) ) {
 				// Find out which peg is on the start field and move it back to the home field.
 				const meta = getPegMetaOfOccupiedHomeField( { currentPlayer, pegs } );
@@ -118,7 +145,18 @@ const Peg = ( props: PegProps ) => {
 			return;
 		}
 
-		// If teh target field is occupied by the same peg, show error.
+		/**
+		 * If the target field is occupied by the current player, return an error.
+		 */
+		if ( isFieldOccupiedByCurrentPlayer( { currentPlayer, pegs, peg, die } ) ) {
+			return dispatch(
+				setNotice( {
+					type: 'error',
+					message: 'There is already a peg on the target field!',
+				} )
+			);
+		}
+
 		// If the target field is occupied by another peg, hit the other peg back to the home field.
 
 		switch ( player ) {
@@ -157,8 +195,6 @@ const Peg = ( props: PegProps ) => {
 		);
 		dispatch( nextPlayer( { currentPlayer } ) );
 		dispatch( rollDie() );
-
-		return;
 	};
 
 	return (

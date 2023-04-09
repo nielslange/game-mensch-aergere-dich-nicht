@@ -4,7 +4,7 @@ const { ROLL_DIE, CLEAR_NOTICE, SET_NOTICE, NEXT_PLAYER, MOVE_PEG } = TYPES;
 
 export const rollDie = () => {
 	// const die = Math.floor( Math.random() * 6 ) + 1;
-	const die = 6;
+	const die = 1;
 
 	return { type: ROLL_DIE, die };
 };

@@ -29,7 +29,15 @@ const Game = () => {
 						( peg.player === 'blue' && peg.field.blue !== 0 && peg.field.blue === field.field?.blue )
 					) {
 						return (
-							<Peg key={ peg.id } id={ peg.id } player={ peg.player } yellow={ field.field?.yellow } green={ field.field?.green } red={ field.field?.red } blue={ field.field?.blue } />
+							<Peg
+								key={ peg.id }
+								id={ peg.id }
+								player={ peg.player }
+								yellow={ field.field?.yellow }
+								green={ field.field?.green }
+								red={ field.field?.red }
+								blue={ field.field?.blue }
+							/>
 						);
 					}
 					return null;
